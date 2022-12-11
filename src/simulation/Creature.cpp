@@ -1,25 +1,25 @@
 #include "Creature.h"
-#include "neuralnetwork/NeuralNetwork.h"
 
-Creature::Creature(const float xInput, const float yInput, const float zInput, const float angleXYInput, const float angleYZInput) {
+Creature::Creature(const float xInput, const float yInput, const float zInput, const float angleXYInput, const float angleYZInput, const float fovInput, const unsigned int numberOfRaysInput): fov(fovInput), numberOfRays(numberOfRaysInput) {
     x = xInput;
     y = yInput;
     z = zInput;
     angleXY = angleXYInput;
     angleYZ = angleYZInput;
+
 }
 
-Creature::Creature(Creature& base) {
+Creature::Creature(const Creature& base): fov(base.getFov()), numberOfRays(base.getNumberOfRays()) {
     x = base.getX();
     y = base.getY();
     z = base.getZ();
     angleXY = base.getAngleXY();
     angleYZ = base.getAngleYZ();
-    brain = base.brainCopy();
+    brain = std::move(base.brainCopy());
+
 }
 
 Creature::~Creature() {
-        delete[] brain;
 }
 
 
@@ -31,17 +31,24 @@ Creature& Creature::operator=(const Creature& base) {
     brain = base.brainCopy();
     float tmpX = base.getX();
     float tmpY = base.getY();
-    float tmpAngle = base.getAngle();
+    float tmpZ = base.getZ();
+    float tmpAngleXY = base.getAngleXY();
+    float tmpAngleYZ = base.getAngleYZ();
+    
     x = tmpX;
     y = tmpY;
-    angle = tmpAngle;
+    z = tmpZ;
+    angleXY = tmpAngleXY;
+    angleYZ = tmpAngleYZ;
+
+    brain = std::move(base.brainCopy());
 
     return *this;
 }
 
-NeuralNetwork* Creature::brainCopy() {
-    NeuralNetwork* newBrain = new NeuralNetwork(brain);
-    return newBrain;
+std::unique_ptr<NeuralNetwork> Creature::brainCopy() const {
+    std::unique_ptr<NeuralNetwork> a;
+    return a;
 }
 
 float Creature::getX() const{
@@ -70,4 +77,8 @@ float Creature::getFov() const {
 
 float Creature::getNumberOfRays() const {
     return numberOfRays;
+}
+
+void Creature::move(float* brainInput)
+{
 }

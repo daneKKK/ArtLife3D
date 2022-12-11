@@ -1,3 +1,7 @@
+#ifndef MEMORY
+#include <memory>
+#endif
+
 #include "neuralnetwork/NeuralNetwork.h"
 
 class Creature {
@@ -5,13 +9,13 @@ private:
     float x, y, z, angleXY, angleYZ;
     const float fov;
     const unsigned int numberOfRays;
-    NeuralNetwork brain;
+    std::unique_ptr<NeuralNetwork> brain;
 public:
-    Creature(const float x, const float y, const float z, const float angleXY, const float angleYZ);
+    Creature(const float x, const float y, const float z, const float angleXY, const float angleYZ, const float fov, const unsigned int numberOfRays);
     Creature(const Creature& base);
     ~Creature();
     Creature& operator=(const Creature& base);
-    NeuralNetwork* brainCopy();
+    std::unique_ptr<NeuralNetwork> brainCopy() const;
     float getX() const;
     float getY() const;
     float getZ() const;
