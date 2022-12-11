@@ -1,0 +1,75 @@
+#include "screen.h"
+
+#include "keyboard.h"
+#include "mouse.h"
+
+unsigned int screen::SCR_WIDTH = 800;
+unsigned int screen::SCR_HEIGHT = 600;
+
+void screen::framebufferSizeCallback(GLFWwindow* widnow, int width, int height) {
+	glViewport(0, 0, width, height);
+
+	SCR_WIDTH = width;
+	SCR_HEIGHT = height;
+}
+
+screen::screen()
+	: window(nullptr) {}
+
+bool screen::init() {
+	window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "OpenGL Tutorial", NULL, NULL);
+	if (window == NULL) {
+		// window not created;
+		return false;
+	}
+	glfwMakeContextCurrent(window);
+
+	return true;
+}
+
+void screen::OpenGL_version() {
+	//OpenGL version 3.3
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //?
+
+	//для запуска на Mac OS
+#ifdef __APPLE__
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif //__APPLE__
+}
+
+void screen::setParameters() {
+	glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+
+	glfwSetFramebufferSizeCallback(window, screen::framebufferSizeCallback);
+
+	glfwSetKeyCallback(window, keyboard::keyCallback);
+
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // disable cursor
+	glfwSetCursorPosCallback(window, mouse::cursorPosCallback);
+	glfwSetMouseButtonCallback(window, mouse::mouseButtonCallback);
+	glfwSetScrollCallback(window, mouse::mouseWheelCallback);
+
+	glEnable(GL_DEPTH_TEST);
+}
+
+// main loop
+void screen::update() {
+	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void screen::newFrame() {
+	glfwSwapBuffers(window);
+}
+
+// window closing
+bool screen::shouldClose() {
+	return glfwWindowShouldClose(window);
+}
+
+void screen::setShouldClose(bool shouldClose) {
+	glfwSetWindowShouldClose(window, shouldClose);
+}
