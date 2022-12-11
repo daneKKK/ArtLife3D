@@ -1,6 +1,11 @@
 #include "Creature.h"
 
-Creature::Creature(const float xInput, const float yInput, const float zInput, const float angleXYInput, const float angleYZInput, const float fovInput, const unsigned int numberOfRaysInput): fov(fovInput), numberOfRays(numberOfRaysInput) {
+Creature::Creature(const float xInput, const float yInput, const float zInput, 
+    const float angleXYInput, const float angleYZInput, 
+    const float fovXYInput, const float fovYZInput, 
+    const unsigned int numberOfRaysXYInput, const unsigned int numberOfRaysYZInput): 
+    fovXY(fovXYInput), fovYZ(fovYZInput), 
+    numberOfRaysXY(numberOfRaysXYInput), numberOfRaysYZ(numberOfRaysYZInput) {
     x = xInput;
     y = yInput;
     z = zInput;
@@ -9,7 +14,9 @@ Creature::Creature(const float xInput, const float yInput, const float zInput, c
 
 }
 
-Creature::Creature(const Creature& base): fov(base.getFov()), numberOfRays(base.getNumberOfRays()) {
+Creature::Creature(const Creature& base): 
+    fovXY(base.getFovXY()), fovYZ(base.getFovYZ()),
+    numberOfRaysXY(base.getNumberOfRaysXY()), numberOfRaysYZ(base.getNumberOfRaysYZ()) {
     x = base.getX();
     y = base.getY();
     z = base.getZ();
@@ -71,12 +78,20 @@ float Creature::getAngleYZ() const {
     return angleYZ;
 }
 
-float Creature::getFov() const {
-    return fov;
+float Creature::getFovXY() const {
+    return fovXY;
 }
 
-float Creature::getNumberOfRays() const {
-    return numberOfRays;
+float Creature::getFovYZ() const {
+    return fovYZ;
+}
+
+unsigned int Creature::getNumberOfRaysXY() const {
+    return numberOfRaysXY;
+}
+
+unsigned int Creature::getNumberOfRaysYZ() const {
+    return numberOfRaysYZ;
 }
 
 void Creature::move(float* brainInput)

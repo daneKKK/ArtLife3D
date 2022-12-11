@@ -64,9 +64,9 @@ public:
 			indices[i] = i;
 		}
 
-		texture tex0("assets/image1.jpg", "texture0");
+		texture tex0("../assets/image1.jpg", "texture0");
 		tex0.load();
-		texture tex1("assets/image2.jpg", "texture1");
+		texture tex1("../assets/image2.jpg", "texture1");
 		tex1.load();
 
 		Mesh = mesh(Vertex::genList(vertices, noVertices), indices, { tex0, tex1 });

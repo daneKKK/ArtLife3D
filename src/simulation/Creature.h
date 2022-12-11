@@ -7,11 +7,16 @@
 class Creature {
 private:
     float x, y, z, angleXY, angleYZ;
-    const float fov;
-    const unsigned int numberOfRays;
+    const float fovXY;
+    const float fovYZ;
+    const unsigned int numberOfRaysXY;
+    const unsigned int numberOfRaysYZ;
     std::unique_ptr<NeuralNetwork> brain;
 public:
-    Creature(const float x, const float y, const float z, const float angleXY, const float angleYZ, const float fov, const unsigned int numberOfRays);
+    Creature(const float x, const float y, const float z, 
+        const float angleXY, const float angleYZ, 
+        const float fovXY, const float fovYZ, 
+        const unsigned int numberOfRaysXY, const unsigned int numberOfRaysYZ);
     Creature(const Creature& base);
     ~Creature();
     Creature& operator=(const Creature& base);
@@ -21,7 +26,9 @@ public:
     float getZ() const;
     float getAngleXY() const;
     float getAngleYZ() const;
-    float getFov() const;
-    float getNumberOfRays() const;
+    float getFovXY() const;
+    float getFovYZ() const;
+    unsigned int getNumberOfRaysXY() const;
+    unsigned int getNumberOfRaysYZ() const;
     void move(float* brainInput);
 };

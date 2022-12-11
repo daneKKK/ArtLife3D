@@ -2,7 +2,7 @@
 #define KEYBOARD_H
 
 #define GLFW_INCLUDE_NONE
-#include <glad/glad.h> //много€зычный загрузчик
+#include <glad/glad.h> //БEьBБEзычный загрузчиБE
 #include <GLFW/glfw3.h>
 
 class keyboard
