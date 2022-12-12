@@ -18,7 +18,7 @@ unsigned int Neuron::getConnectionLength() {
 	return connection.size();
 }
 
-void Neuron::switchConnection(int x, int y, float weight) {
+void Neuron::switchConnection(int x, int y) {
 	auto iterator = connection.begin();
 	while (iterator < connection.end()) {
 		if ((iterator->x == x) && (iterator->y == y)&&(uniformRand()<0.2)) {
@@ -27,7 +27,7 @@ void Neuron::switchConnection(int x, int y, float weight) {
 		}
 		++iterator;
 	}
-	connection.push_back(Connection(x, y, weight));
+	connection.push_back(Connection(x, y, (uniformRand() - 0.5f)*2));
 }
 
 void Neuron::mutate() {
@@ -43,4 +43,39 @@ void Neuron::mutate() {
 std::vector<Connection> Neuron::getConnections() const {
 	std::vector<Connection> a = connection;
 	return a;
+}
+
+bool Neuron::checkConnection(int x, int y) {
+	auto iterator = connection.begin();
+	while (iterator < connection.end()) {
+		if ((iterator->x == x) && (iterator->y = y)) {
+			return true;
+		}
+	}
+	return false;
+}
+
+void Neuron::giveInput(int x, int y, float w) {
+	auto iterator = connection.begin();
+	while (iterator < connection.end()) {
+		if ((iterator->x == x) && (iterator->y = y)) {
+			iterator->lastInput = w;
+		}
+	}
+}
+
+float Neuron::calculateOutput()
+{
+	float inputs = 0;
+	auto iterator = connection.begin();
+	while (iterator < connection.end()) {
+		inputs += iterator->lastInput * iterator->weight;
+	}
+	lastOutput = 1.0f / (1.0f + std::exp(-1 * inputs));
+	return lastOutput;
+}
+
+float Neuron::getOutput()
+{
+	return lastOutput;
 }

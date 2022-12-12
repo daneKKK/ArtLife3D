@@ -94,11 +94,12 @@ NeuralNetwork::NeuralNetwork(const NeuralNetwork& base, bool mutate): inputSize(
 				if (connectionFound) { break; }
 			}
 		}
+		if (y0 >= y1) { return; };
 		if (y1 == 4) {
-			output.at(x1)->switchConnection(x0, y0, 0.0f);
+			output.at(x1)->switchConnection(x0, y0);
 		}
 		else {
-			network.at(y1).at(x1)->switchConnection(x0, y0, 0.0f);
+			network.at(y1).at(x1)->switchConnection(x0, y0);
 		}
 	}
 	else {
@@ -127,6 +128,11 @@ unsigned int NeuralNetwork::getInputSize() const
 unsigned int NeuralNetwork::getExistingNeurons() const
 {
 	return existingNeurons;
+}
+
+float NeuralNetwork::getOneOutput(int x, int y) const
+{
+	return 0.0f;
 }
 
 std::array<std::array<Neuron*, 10>, 4> NeuralNetwork::copyNetwork() const
@@ -166,4 +172,45 @@ std::array<Neuron*, 3> NeuralNetwork::copyOutput() const
 		++iterABase;
 	}
 	return a;
+}
+
+void NeuralNetwork::calculateOutputs(std::vector<float> &input) {
+	//CAN BE GREATLY REMADE BY CHANGING THE DIRECTION OF CONNECTIONS!!!!!!!!
+	auto i = network.begin();
+	int y0 = 0;
+	while (i < network.end()) {
+		auto j = i->begin();
+		int x0 = 0;
+		while (j < i->end()) {
+			for (int k = 0; k < input.size(); k++) {
+				(*j)->giveInput(k, -1, input.at(k));
+			}
+			int y = 0;
+			for (auto l = network.begin(); l < i; ++l) {
+				int x = 0;
+				for (auto m = l->begin(); m < l->end(); m++) {
+					if ((*m) != nullptr) {
+						(*j)->giveInput(x, y, (*m)->getOutput());
+					}
+					++x;
+				}
+				++y;
+			}
+			(*j)->calculateOutput();
+			++x0;
+			for (auto n = output.begin(); n < output.end(); ++n) {
+				(*n)->giveInput(x0, y0, (*j)->getOutput());
+			}
+		}
+		++y0;
+		++i;
+	}
+	for (int j = 0; j < input.size(); ++j) {
+		for (auto n = output.begin(); n < output.end(); ++n) {
+			(*n)->giveInput(j, -1, input.at(j));
+		}
+	}
+	for (auto n = output.begin(); n < output.end(); ++n) {
+		(*n)->calculateOutput();
+	}
 }
