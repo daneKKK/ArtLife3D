@@ -27,6 +27,7 @@ private:
     float birthCounter = 0.0f;
     float lastSpeed = 0.0f;
     const float hungerFactor;
+    float timer = 1.0f;
 public:
     Creature(const float x, const float y, const float z,
         const float angleXY, const float angleYZ,
@@ -51,4 +52,6 @@ public:
     float getBirthCounter() const;
     void setBirthCounter(float birthCounterInput);
     float getHungerFactor() const;
+    float getTimer() const;
+    void setTimer(const float t);
 };

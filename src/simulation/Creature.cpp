@@ -92,6 +92,16 @@ unsigned int Creature::getNumberOfRaysXY() const {
     return numberOfRaysXY;
 }
 
+float Creature::getTimer() const
+{
+    return timer;
+}
+
+void Creature::setTimer(const float t)
+{
+    timer = t;
+}
+
 unsigned int Creature::getNumberOfRaysYZ() const {
     return numberOfRaysYZ;
 }
