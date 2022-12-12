@@ -3,26 +3,28 @@
 Creature::Creature(const float xInput, const float yInput, const float zInput, 
     const float angleXYInput, const float angleYZInput, 
     const float fovXYInput, const float fovYZInput, 
-    const unsigned int numberOfRaysXYInput, const unsigned int numberOfRaysYZInput): 
+    const unsigned int numberOfRaysXYInput, const unsigned int numberOfRaysYZInput,
+    const float hungerInput):
     fovXY(fovXYInput), fovYZ(fovYZInput), 
-    numberOfRaysXY(numberOfRaysXYInput), numberOfRaysYZ(numberOfRaysYZInput) {
+    numberOfRaysXY(numberOfRaysXYInput), numberOfRaysYZ(numberOfRaysYZInput),
+    hungerFactor(hungerInput) {
     x = xInput;
     y = yInput;
     z = zInput;
     angleXY = angleXYInput;
     angleYZ = angleYZInput;
-
+    energy = MAXENERGY;
 }
 
 Creature::Creature(const Creature& base): 
     fovXY(base.getFovXY()), fovYZ(base.getFovYZ()),
-    numberOfRaysXY(base.getNumberOfRaysXY()), numberOfRaysYZ(base.getNumberOfRaysYZ()) {
+    numberOfRaysXY(base.getNumberOfRaysXY()), numberOfRaysYZ(base.getNumberOfRaysYZ()), hungerFactor(base.getHungerFactor()) {
     x = base.getX();
     y = base.getY();
     z = base.getZ();
     angleXY = base.getAngleXY();
     angleYZ = base.getAngleYZ();
-    brain = std::move(base.brainCopy());
+    brain = base.brainCopy();
 
 }
 
@@ -53,8 +55,8 @@ Creature& Creature::operator=(const Creature& base) {
     return *this;
 }
 
-std::unique_ptr<NeuralNetwork> Creature::brainCopy() const {
-    std::unique_ptr<NeuralNetwork> a;
+NeuralNetwork Creature::brainCopy() const {
+    NeuralNetwork a(brain);
     return a;
 }
 
@@ -94,6 +96,38 @@ unsigned int Creature::getNumberOfRaysYZ() const {
     return numberOfRaysYZ;
 }
 
-void Creature::move(float* brainInput)
+float Creature::getBirthCounter() const
 {
+    return birthCounter;
+}
+
+void Creature::setBirthCounter(float birthCounterInput) {
+    birthCounter = birthCounterInput;
+}
+
+void Creature::move(std::vector<float> &input) {
+    float speed, angularSpeed;
+    brain.calculateOutputs(input);
+    speed = brain.getOutput(0);
+    angularSpeed = brain.getOutput(1);
+
+    x += speed * std::cos(angleXY);
+    y += speed * std::sin(angleXY);
+    angleXY += angularSpeed;
+
+    lastSpeed = speed;
+    energy -= abs(speed) * hungerFactor;
+}
+
+float Creature::getEnergy() const
+{
+    return energy;
+}
+
+void Creature::setEnergy(float energyInput) {
+    energy = energyInput;
+}
+
+float Creature::getHungerFactor() const {
+    return hungerFactor;
 }

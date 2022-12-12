@@ -34,4 +34,5 @@ public:
     std::array<std::array<Neuron*, 10>, 4> copyNetwork() const;
     std::array<Neuron*, 3> copyOutput() const;
     void calculateOutputs(std::vector<float> &input);
+    float getOutput(int i) const;
 };

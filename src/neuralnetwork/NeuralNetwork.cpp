@@ -130,10 +130,6 @@ unsigned int NeuralNetwork::getExistingNeurons() const
 	return existingNeurons;
 }
 
-float NeuralNetwork::getOneOutput(int x, int y) const
-{
-	return 0.0f;
-}
 
 std::array<std::array<Neuron*, 10>, 4> NeuralNetwork::copyNetwork() const
 {
@@ -213,4 +209,9 @@ void NeuralNetwork::calculateOutputs(std::vector<float> &input) {
 	for (auto n = output.begin(); n < output.end(); ++n) {
 		(*n)->calculateOutput();
 	}
+}
+
+float NeuralNetwork::getOutput(int i) const
+{
+	return output.at(i)->getOutput();
 }

@@ -2,6 +2,14 @@
 #include <memory>
 #endif
 
+#ifndef VECTOR
+#include <vector>
+#endif
+
+#ifndef MATH
+#include <cmath>
+#endif
+
 #include "neuralnetwork/NeuralNetwork.h"
 
 class Creature {
@@ -11,16 +19,23 @@ private:
     const float fovYZ;
     const unsigned int numberOfRaysXY;
     const unsigned int numberOfRaysYZ;
-    std::unique_ptr<NeuralNetwork> brain;
+    NeuralNetwork brain;
+    const float MAXENERGY = 500.0f;
+    const float MAXVELOCITY = 1;
+    const float MAXANGULARVELOCITY = 0.04f;
+    float energy = MAXENERGY;
+    float birthCounter = 0.0f;
+    float lastSpeed = 0.0f;
+    const float hungerFactor;
 public:
-    Creature(const float x, const float y, const float z, 
-        const float angleXY, const float angleYZ, 
-        const float fovXY, const float fovYZ, 
-        const unsigned int numberOfRaysXY, const unsigned int numberOfRaysYZ);
+    Creature(const float x, const float y, const float z,
+        const float angleXY, const float angleYZ,
+        const float fovXY, const float fovYZ,
+        const unsigned int numberOfRaysXY, const unsigned int numberOfRaysYZ, const float hungerInput);
     Creature(const Creature& base);
     ~Creature();
     Creature& operator=(const Creature& base);
-    std::unique_ptr<NeuralNetwork> brainCopy() const;
+    NeuralNetwork brainCopy() const;
     float getX() const;
     float getY() const;
     float getZ() const;
@@ -30,5 +45,10 @@ public:
     float getFovYZ() const;
     unsigned int getNumberOfRaysXY() const;
     unsigned int getNumberOfRaysYZ() const;
-    void move(float* brainInput);
+    void move(std::vector<float> &brainInput);
+    float getEnergy() const;
+    void setEnergy(float energyInput);
+    float getBirthCounter() const;
+    void setBirthCounter(float birthCounterInput);
+    float getHungerFactor() const;
 };
