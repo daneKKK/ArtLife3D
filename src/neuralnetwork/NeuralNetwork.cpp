@@ -1,4 +1,12 @@
-#include "neuralnetwork/NeuralNetwork.h"
+#include "NeuralNetwork.h"
+
+float NeuralNetwork::uniformRand() {
+	return static_cast <float> (std::rand()) / static_cast <float> (RAND_MAX);
+}
+
+float NeuralNetwork::getOneOutput(int x, int y) {
+	return network.at(y).at(x)->getOutput();
+}
 
 NeuralNetwork::NeuralNetwork(): NeuralNetwork(1) {}
 
