@@ -5,6 +5,7 @@
 #include "graphics/rendering/shader.h"
 #include "graphics/models/cube.hpp"
 
+#include "simulation/Creature.h"
 
 int main() 
 {
@@ -34,6 +35,16 @@ int main()
 
 	// SHADERS===============================
 	shader Shader("assets/object.vs", "assets/object.fs");
+	
+	// CREATURES===============================
+	int simulationX = 100;
+	int simulationY = 100;
+
+	std::vector<Creature> herbivore;
+	std::vector<Creature> carnivore;
+
+	herbivore.push_back(Creature(10, 50, 0, 0, 0, 3, 0, 24, 1, 1.0f));
+	carnivore.push_back(Creature(40, 50, 0, 0, 0, 0.5f, 0, 24, 1, 0.8f));
 	
 	// MODELS==============================
 	cube Cube0(glm::vec3(1.0f, 0.0f, -1.0f), glm::vec3(0.75f));
