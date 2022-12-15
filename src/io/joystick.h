@@ -34,7 +34,7 @@
 #include <glad/glad.h> //многоязычный загрузчик
 #include <GLFW/glfw3.h>
 
-class joystick
+class joystick final
 {
 private:
 	int present;
@@ -54,14 +54,14 @@ public:
 
 	void update();
 
-	float axesState(int axis);
-	unsigned char buttonState(int button);
+	float axesState(int axis) const;
+	unsigned char buttonState(int button) const;
 
-	int getAxesCount();
-	int getButtonCount();
+	int getAxesCount() const;
+	int getButtonCount() const;
 
-	bool isPresent();
-	const char* getName();
+	bool isPresent() const;
+	const char* getName() const;
 
 	static int getId(int i);
 };

@@ -43,7 +43,7 @@ void settings_camera::input_mouse() {
 	double dy = mouse::getDY();
 	double dY = mouse::getScrollDY();
 	if (dx != 0 || dy != 0) {
-		updateCameraDiraction(dx * (sensitivity/100), dy * (sensitivity / 100));
+		updateCameraDiraction(dx * (sensitivity / 100), dy * (sensitivity / 100));
 	}
 	if (dY != 0) {
 		updateCameraZoom(dY * sensitivity_zoom);

@@ -2,7 +2,7 @@
 
 void camera::updateCameraVectors() {
 	glm::vec3 direction;
-	direction.x = cos(glm::radians(yaw) * cos(glm::radians(pitch)));
+	direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
 	direction.y = sin(glm::radians(pitch));
 	direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
 	cameraFront = glm::normalize(direction);
@@ -59,13 +59,13 @@ void camera::updateCameraPos(CameraDirection dir, float velocity) {
 }
 
 void camera::updateCameraZoom(double dy) {
-	if (zoom >= 8.0f && zoom <= 60.0f) {
+	if (zoom >= 15.0f && zoom <= 60.0f) {
 		zoom -= dy;
 	}
-	else if (zoom < 8.0f) {
-		zoom = 8.0f;
+	else if (zoom < 15.0f) {
+		zoom = 15.0f;
 	}
-	else { //>60.0f && zoom >= 8.0f
+	else { //>60.0f && zoom >= 15.0f
 		zoom = 60.0f;
 	}
 }
@@ -75,5 +75,6 @@ float camera::getZoom() const {
 }
 
 glm::mat4 camera::getVeiwMatrix() {
+	//выделите lookAt, нажмите F12(Fn F12), поставьте точку останова возле lookAtRH, чтобы понять, как работает камера
 	return glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 }

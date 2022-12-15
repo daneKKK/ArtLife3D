@@ -3,7 +3,7 @@
 
 #include "camera.h"
 
-class settings_camera: public camera
+class settings_camera final: public camera
 {
 private:
 	float sensitivity;

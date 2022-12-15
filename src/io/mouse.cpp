@@ -15,8 +15,9 @@ double mouse::scrollDY = 0;
 //см. cursorPosCallback
 bool mouse::firstMouse = true;
 
-//все клавеши отпущены
+//все клавиши мышки отпущены
 bool mouse::buttons[GLFW_MOUSE_BUTTON_LAST] = { 0 };
+//изменений нет
 bool mouse::buttonsChanged[GLFW_MOUSE_BUTTON_LAST] = { 0 };
 
 //изменение позиции мышки спустя 1 кадр
@@ -35,6 +36,7 @@ void mouse::cursorPosCallback(GLFWwindow* window, double _x, double _y) {
 	lastX = x;
 	lastY = y;
 }
+//аналогично клавиатуре
 void mouse::mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) { 
 	if (action != GLFW_RELEASE) {
 		if (!buttons[button]) {
@@ -46,6 +48,7 @@ void mouse::mouseButtonCallback(GLFWwindow* window, int button, int action, int 
 	}
 	buttonsChanged[button] = action != GLFW_REPEAT;
 }
+//управление колёсиком мышки, 1 - на сколько прокрутили, 2 - направление прокрутки (1 вперёд, -1 назад)
 void mouse::mouseWheelCallback(GLFWwindow* window, double dx, double dy) {
 	scrollDX = dx;
 	scrollDY = dy;

@@ -16,30 +16,30 @@ void joystick::update() {
 	}
 }
 
-float joystick::axesState(int axis) {
+float joystick::axesState(int axis) const {
 	if (present) {
 		return axes[axis];
 	}
 	return 0.0f;
 }
 
-unsigned char joystick::buttonState(int button) {
+unsigned char joystick::buttonState(int button) const {
 	return present ? buttons[button] : GLFW_RELEASE;
 }
 
-int joystick::getAxesCount() {
+int joystick::getAxesCount() const {
 	return axesCount;
 }
 
-int joystick::getButtonCount() {
+int joystick::getButtonCount() const {
 	return buttonCount;
 }
 
-bool joystick::isPresent() {
+bool joystick::isPresent() const{
 	return present;
 }
 
-const char* joystick::getName() {
+const char* joystick::getName() const {
 	return name;
 }
 

@@ -4,31 +4,32 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-class screen {
+class screen final
+{
 private:
 	GLFWwindow* window;
+
+	static void framebufferSizeCallback(GLFWwindow* window, int width, int height);
 
 public:
 	static unsigned int SCR_WIDTH;
 	static unsigned int SCR_HEIGHT;
 
-	static void framebufferSizeCallback(GLFWwindow* window, int width, int height);
+	static void OpenGL_version();
 
 	screen();
 
 	bool init();
 
-	static void OpenGL_version();
-
-	void setParameters();
+	void setParameters() const;
 
 	// main loop
-	void update();
-	void newFrame();
+	void update() const; 
+	void newFrame() const;
 
 	// window closing
-	bool shouldClose();
-	void setShouldClose(bool shouldClose);
+	bool shouldClose() const;
+	void setShouldClose(bool shouldClose) const;
 
 };
 
