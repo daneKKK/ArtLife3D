@@ -3,7 +3,8 @@
 
 #include "../objects/model.h"
 
-class cube : public model {
+class cube : public model
+{
 public:
 	glm::vec3 pos;
 	glm::vec3 size;
