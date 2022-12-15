@@ -13,7 +13,7 @@ public:
 
 	void init() {
 		int noVertices = 36;
-
+	
 		float vertices[] = {
 			//	position				texture coordinates
 				-0.5f, -0.5f, -0.5f,	0.0f, 0.0f,
@@ -64,22 +64,22 @@ public:
 			indices[i] = i;
 		}
 
-		texture tex0("../assets/image1.jpg", "texture0");
+		texture tex0("assets/image1.jpg", "texture0");
 		tex0.load();
-		texture tex1("../assets/image2.jpg", "texture1");
+		texture tex1("assets/image2.jpg", "texture1");
 		tex1.load();
 
 		Mesh = mesh(Vertex::genList(vertices, noVertices), indices, { tex0, tex1 });
 	}
 
-	void render(Shader shader) {
+	void render(shader Shader, glm::vec3 rot) const {
 		glm::mat4 Model = glm::mat4(1.0f);
 		Model = glm::translate(Model, pos);
 		Model = glm::scale(Model, size);
-		Model = glm::rotate(Model, (float)glfwGetTime() * glm::radians(-55.0f), glm::vec3(0.5f, 0.5f, 0.5f));
-		shader.setMat4("model", Model);
+		Model = glm::rotate(Model, (float)glfwGetTime() * glm::radians(-55.0f), rot);
+		Shader.setMat4("model", Model);
 
-		model::render(shader);
+		model::render(Shader);
 	}
 };
 

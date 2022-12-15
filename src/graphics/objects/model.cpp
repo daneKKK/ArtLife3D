@@ -2,8 +2,8 @@
 
 model::model() {}
 
-void model::render(Shader shader) {
-	Mesh.render(shader);
+void model::render(shader Shader) const {
+	Mesh.render(Shader);
 }
 
 void model::cleanup() {

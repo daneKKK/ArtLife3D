@@ -6,7 +6,8 @@
 
 #include <stb/stb_image.h>
 
-class texture {
+class texture final
+{
 private:
 	static int currentId;
 
@@ -23,15 +24,15 @@ public:
 	void generate();
 	void load(bool flip = true);
 
-	void setFilters(GLenum all);
-	void setFilters(GLenum mag, GLenum min);
+	void setFilters(GLenum all) const;
+	void setFilters(GLenum mag, GLenum min) const;
 
-	void setWrap(GLenum all);
-	void setWrap(GLenum s, GLenum t);
+	void setWrap(GLenum all) const;
+	void setWrap(GLenum s, GLenum t) const;
 
-	void setBorderColor(float borderColor[4]);
+	void setBorderColor(float borderColor[4]) const;
 
-	void activate();
+	void activate() const;
 
 	// texture object
 	int id;

@@ -1,17 +1,14 @@
 #ifndef MESH_H
 #define MESH_H
 
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
 #include <vector>
 #include <glm/glm.hpp>
 
 #include "../rendering/texture.h"
 #include "../rendering/shader.h"
 
-
-struct Vertex {
+struct Vertex final
+{
 	glm::vec3 pos;
 	glm::vec2 texCoord;
 
@@ -23,23 +20,25 @@ struct Vertex {
 	static std::vector<Vertex> genList(float* vertices, int noVertices);
 };
 
-class mesh {
+class mesh final 
+{
 private:
-	unsigned int VBO, EBO;
+	unsigned int VBO, EBO, VAO;
 
 	void setup();
 
 public:
 	std::vector<Vertex> vertices;
+
 	std::vector<unsigned int> indices;
-	unsigned int VAO;
 
 	std::vector<texture> textures;
 
 	mesh();
+
 	mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<texture> textures);
 
-	void render(Shader shader);
+	void render(shader Shader) const;
 
 	void cleanup();
 };

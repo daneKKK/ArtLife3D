@@ -23,15 +23,19 @@ std::vector<Vertex> Vertex::genList(float* vertices, int noVertices) {
 
 mesh::mesh() {}
 
-mesh::mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<texture> textures)
-	: vertices(vertices), indices(indices), textures(textures) {
+mesh::mesh(std::vector<Vertex> vertices, 
+	std::vector<unsigned int> indices, 
+	std::vector<texture> textures)
+	: vertices(vertices), 
+	indices(indices), 
+	textures(textures) {
 	setup();
 }
 
-void mesh::render(Shader shader) {
+void mesh::render(shader Shader) const {
 	// textures
 	for (unsigned int i = 0; i < textures.size(); i++) {
-		shader.setInt(textures[i].name, textures[i].id);
+		Shader.setInt(textures[i].name, textures[i].id);
 		textures[i].activate();
 		glBindTexture(GL_TEXTURE_2D, textures[i].id);
 	}

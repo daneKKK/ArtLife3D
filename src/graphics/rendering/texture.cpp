@@ -48,28 +48,28 @@ void texture::load(bool flip) {
 	stbi_image_free(data);
 }
 
-void texture::setFilters(GLenum all) {
+void texture::setFilters(GLenum all) const {
 	setFilters(all, all);
 }
 
-void texture::setFilters(GLenum mag, GLenum min) {
+void texture::setFilters(GLenum mag, GLenum min) const {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, mag);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, min);
 }
 
-void texture::setWrap(GLenum all) {
+void texture::setWrap(GLenum all) const {
 	setWrap(all, all);
 }
 
-void texture::setWrap(GLenum s, GLenum t) {
+void texture::setWrap(GLenum s, GLenum t) const {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, s);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, t);
 }
 
-void texture::setBorderColor(float borderColor[4]) {
+void texture::setBorderColor(float borderColor[4]) const {
 	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
 }
 
-void texture::activate() {
+void texture::activate() const {
 	glActiveTexture(GL_TEXTURE0 + id);
 }

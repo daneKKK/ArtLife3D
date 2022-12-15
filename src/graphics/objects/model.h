@@ -11,15 +11,14 @@
 
 #include "mesh.h"
 
-class model {
+class model 
+{
 public:
 	mesh Mesh;
 
 	model();
 
-	void init();
-
-	void render(Shader shader);
+	void render(shader Shader) const;
 
 	void cleanup();
 };
