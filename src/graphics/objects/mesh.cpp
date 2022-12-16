@@ -11,11 +11,6 @@ std::vector<Vertex> Vertex::genList(float* vertices, int noVertices) {
 			vertices[i * stride + 1],
 			vertices[i * stride + 2]
 		);
-
-		ret[i].texCoord = glm::vec2(
-			vertices[i * stride + 3],
-			vertices[i * stride + 4]
-		);
 	}
 
 	return ret;
@@ -24,29 +19,17 @@ std::vector<Vertex> Vertex::genList(float* vertices, int noVertices) {
 mesh::mesh() {}
 
 mesh::mesh(std::vector<Vertex> vertices, 
-	std::vector<unsigned int> indices, 
-	std::vector<texture> textures)
+	std::vector<unsigned int> indices)
 	: vertices(vertices), 
-	indices(indices), 
-	textures(textures) {
+	indices(indices) {
 	setup();
 }
 
 void mesh::render(shader Shader) const {
-	// textures
-	for (unsigned int i = 0; i < textures.size(); i++) {
-		Shader.setInt(textures[i].name, textures[i].id);
-		textures[i].activate();
-		glBindTexture(GL_TEXTURE_2D, textures[i].id);
-	}
-
 	// EBO stuff
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, vertices.size(), GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
-
-	// reset
-	glActiveTexture(GL_TEXTURE0);
 }
 
 void mesh::cleanup() {
@@ -75,9 +58,6 @@ void mesh::setup() {
 	// vertex.position
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
-	// vertex.texCoord
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(offsetof(Vertex, texCoord)));
 
 	glBindVertexArray(0);
 }

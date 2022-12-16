@@ -3,61 +3,63 @@
 
 #include "../objects/model.h"
 
-class cube : public model
+class cube : public model 
 {
 public:
 	glm::vec3 pos;
+	glm::vec4 colors;
 	glm::vec3 size;
 
-	cube(glm::vec3 pos = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 size = glm::vec3(1.0f, 1.0f, 1.0f))
-		: pos(pos), size(size) {}
+	cube(glm::vec4 colors = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
+		glm::vec3 size = glm::vec3(2.0f, 2.0f, 2.0f))
+		: pos(glm::vec3(0.0f, 0.0f, 0.0f)), colors(colors), size(size) {}
 
 	void init() {
 		int noVertices = 36;
 	
 		float vertices[] = {
-			//	position				texture coordinates
-				-0.5f, -0.5f, -0.5f,	0.0f, 0.0f,
-				 0.5f, -0.5f, -0.5f,	1.0f, 0.0f,
-				 0.5f,  0.5f, -0.5f,	1.0f, 1.0f,
-				 0.5f,  0.5f, -0.5f,	1.0f, 1.0f,
-				-0.5f,  0.5f, -0.5f,	0.0f, 1.0f,
-				-0.5f, -0.5f, -0.5f,	0.0f, 0.0f,
+				//	position			
+				-0.5f, -0.5f, -0.5f,
+				 0.5f, -0.5f, -0.5f,
+				 0.5f,  0.5f, -0.5f,
+				 0.5f,  0.5f, -0.5f,
+				-0.5f,  0.5f, -0.5f,
+				-0.5f, -0.5f, -0.5f,
 
-				-0.5f, -0.5f,  0.5f,	0.0f, 0.0f,
-				 0.5f, -0.5f,  0.5f,	1.0f, 0.0f,
-				 0.5f,  0.5f,  0.5f,	1.0f, 1.0f,
-				 0.5f,  0.5f,  0.5f,	1.0f, 1.0f,
-				-0.5f,  0.5f,  0.5f,	0.0f, 1.0f,
-				-0.5f, -0.5f,  0.5f,	0.0f, 0.0f,
+				-0.5f, -0.5f,  0.5f,
+				 0.5f, -0.5f,  0.5f,
+				 0.5f,  0.5f,  0.5f,
+				 0.5f,  0.5f,  0.5f,
+				-0.5f,  0.5f,  0.5f,
+				-0.5f, -0.5f,  0.5f,
 
-				-0.5f,  0.5f,  0.5f,	1.0f, 0.0f,
-				-0.5f,  0.5f, -0.5f,	1.0f, 1.0f,
-				-0.5f, -0.5f, -0.5f,	0.0f, 1.0f,
-				-0.5f, -0.5f, -0.5f,	0.0f, 1.0f,
-				-0.5f, -0.5f,  0.5f,	0.0f, 0.0f,
-				-0.5f,  0.5f,  0.5f,	1.0f, 0.0f,
+				-0.5f,  0.5f,  0.5f,
+				-0.5f,  0.5f, -0.5f,
+				-0.5f, -0.5f, -0.5f,
+				-0.5f, -0.5f, -0.5f,
+				-0.5f, -0.5f,  0.5f,
+				-0.5f,  0.5f,  0.5f,
 
-				 0.5f,  0.5f,  0.5f,	1.0f, 0.0f,
-				 0.5f,  0.5f, -0.5f,	1.0f, 1.0f,
-				 0.5f, -0.5f, -0.5f,	0.0f, 1.0f,
-				 0.5f, -0.5f, -0.5f,	0.0f, 1.0f,
-				 0.5f, -0.5f,  0.5f,	0.0f, 0.0f,
-				 0.5f,  0.5f,  0.5f,	1.0f, 0.0f,
+				 0.5f,  0.5f,  0.5f,
+				 0.5f,  0.5f, -0.5f,
+				 0.5f, -0.5f, -0.5f,
+				 0.5f, -0.5f, -0.5f,
+				 0.5f, -0.5f,  0.5f,
+				 0.5f,  0.5f,  0.5f,
 
-				-0.5f, -0.5f, -0.5f,	0.0f, 1.0f,
-				 0.5f, -0.5f, -0.5f,	1.0f, 1.0f,
-				 0.5f, -0.5f,  0.5f,	1.0f, 0.0f,
-				 0.5f, -0.5f,  0.5f,	1.0f, 0.0f,
-				-0.5f, -0.5f,  0.5f,	0.0f, 0.0f,
-				-0.5f, -0.5f, -0.5f,	0.0f, 1.0f,
+				-0.5f, -0.5f, -0.5f,
+				 0.5f, -0.5f, -0.5f,
+				 0.5f, -0.5f,  0.5f,
+				 0.5f, -0.5f,  0.5f,
+				-0.5f, -0.5f,  0.5f,
+				-0.5f, -0.5f, -0.5f,
 
-				-0.5f,  0.5f, -0.5f,	0.0f, 1.0f,
-				 0.5f,  0.5f, -0.5f,	1.0f, 1.0f,
-				 0.5f,  0.5f,  0.5f,	1.0f, 0.0f,
-				 0.5f,  0.5f,  0.5f,	1.0f, 0.0f,
-				-0.5f,  0.5f,  0.5f,	0.0f, 0.0f,
-				-0.5f,  0.5f, -0.5f,	0.0f, 1.0f
+				-0.5f,  0.5f, -0.5f,	
+				 0.5f,  0.5f, -0.5f,	
+				 0.5f,  0.5f,  0.5f,	
+				 0.5f,  0.5f,  0.5f,	
+				-0.5f,  0.5f,  0.5f,	
+				-0.5f,  0.5f, -0.5f	
 		};
 
 		std::vector<unsigned int> indices(noVertices);
@@ -65,21 +67,20 @@ public:
 			indices[i] = i;
 		}
 
-		texture tex0("assets/image1.jpg", "texture0");
-		tex0.load();
-		texture tex1("assets/image2.jpg", "texture1");
-		tex1.load();
-
-		Mesh = mesh(Vertex::genList(vertices, noVertices), indices, { tex0, tex1 });
+		Mesh = mesh(Vertex::genList(vertices, noVertices), indices);
 	}
 
-	void render(shader Shader, glm::vec3 rot) const {
+	void render(shader Shader, glm::vec3 pos, glm::vec4 colors) const {
 		glm::mat4 Model = glm::mat4(1.0f);
+		glm::mat4 Colors = {colors,
+			glm::vec4(0.0f),
+			glm::vec4(0.0f),
+			glm::vec4(0.0f)};
 		Model = glm::translate(Model, pos);
 		Model = glm::scale(Model, size);
-		Model = glm::rotate(Model, (float)glfwGetTime() * glm::radians(-55.0f), rot);
 		Shader.setMat4("model", Model);
-
+		Shader.setMat4("Colors", Colors);
+		
 		model::render(Shader);
 	}
 };

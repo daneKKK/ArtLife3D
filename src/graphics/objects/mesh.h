@@ -10,11 +10,10 @@
 struct Vertex final
 {
 	glm::vec3 pos;
-	glm::vec2 texCoord;
 
 	/*
-	v1.vec3.x|v1.vec3.y|v1.vec3.z|v1.vec2.x|v1.vec2.y|
-	v2.vec3.x|v2.vec3.y|v2.vec3.z|v2.vec2.x|v2.vec2.y
+	v1.vec3.x|v1.vec3.y|v1.vec3.z|
+	v2.vec3.x|v2.vec3.y|v2.vec3.z|
 	*/
 
 	static std::vector<Vertex> genList(float* vertices, int noVertices);
@@ -28,15 +27,14 @@ private:
 	void setup();
 
 public:
+
 	std::vector<Vertex> vertices;
 
 	std::vector<unsigned int> indices;
 
-	std::vector<texture> textures;
-
 	mesh();
 
-	mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<texture> textures);
+	mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
 
 	void render(shader Shader) const;
 
