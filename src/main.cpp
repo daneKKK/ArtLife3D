@@ -5,9 +5,8 @@
 #include "graphics/rendering/shader.h"
 #include "graphics/models/cube.hpp"
 
-#include "simulation/Creature.h"
 
-int main() 
+int main()
 {
 	float mixVal = 0.5f;
 
@@ -35,23 +34,15 @@ int main()
 
 	// SHADERS===============================
 	shader Shader("assets/object.vs", "assets/object.fs");
-	
-	// CREATURES===============================
-	int simulationX = 100;
-	int simulationY = 100;
 
-	std::vector<Creature> herbivore;
-	std::vector<Creature> carnivore;
-
-	herbivore.push_back(Creature(10, 50, 0, 0, 0, 3, 0, 24, 1, 1.0f));
-	carnivore.push_back(Creature(40, 50, 0, 0, 0, 0.5f, 0, 24, 1, 0.8f));
-	
 	// MODELS==============================
-	cube Cube0(glm::vec3(1.0f, 0.0f, -1.0f), glm::vec3(0.75f));
-	Cube0.init();
-
-	cube Cube1(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.75f));
-	Cube1.init();
+	
+	//задай колличество кубов===========================
+	cube MultyCube[1000];
+	for (int i = 0; i < 1000; i++) {
+		MultyCube[i].init();
+	}
+	//==================================================
 
 	glm::mat4 view = glm::mat4(1.0f);
 	glm::mat4 projection = glm::mat4(1.0f);
@@ -64,19 +55,6 @@ int main()
 
 		if (keyboard::key(GLFW_KEY_ESCAPE)) {
 			Screen.setShouldClose(true);
-		}
-		// change mix value
-		if (keyboard::key(GLFW_KEY_Q)) {
-			mixVal += 0.5f * user.dt;
-			if (mixVal > 1) {
-				mixVal = 1.0f;
-			}
-		}
-		if (keyboard::key(GLFW_KEY_E)) {
-			mixVal -= 0.5f * user.dt;
-			if (mixVal < 0) {
-				mixVal = 0.0f;
-			}
 		}
 
 		// process input
@@ -91,11 +69,8 @@ int main()
 
 		Shader.setFloat("mixVal", mixVal);
 
-		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		//glDrawArrays(GL_TRIANGLES, 0, 36);
-
 		// create transformation
-		
+
 		view = user.getVeiwMatrix();
 		//http://www.songho.ca/opengl/gl_projectionmatrix.html
 		projection = glm::perspective(glm::radians(user.zoom), (float)screen::SCR_WIDTH / (float)screen::SCR_HEIGHT, 0.1f, 100.0f);
@@ -103,8 +78,17 @@ int main()
 		Shader.setMat4("view", view);
 		Shader.setMat4("projection", projection);
 
-		Cube0.render(Shader, {1.0f, 1.0f, 1.0f});
-		Cube1.render(Shader, {-1.0f, 1.0f, 0.0f});
+		//подставь параметры сюда!===============================
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 10; j++) {
+				for (int k = 0; k < 10; k++) {
+					MultyCube[100 * i + 10 * j + k].render(Shader,
+						{ 10 * i, 10 * j, 10 * k }, //позиция куба x, y, z
+						{ 0.1f * i, 0.1f * j, 0.1f * k, 0.0f }); //цвет куба меняется от 0 до 1, первые 3 параметра r,g,b, последний всунь по умолчанию 0
+				}
+			} 
+		}
+		//=======================================================
 
 		// send new frame to window
 		Screen.newFrame();
