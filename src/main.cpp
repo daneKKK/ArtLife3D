@@ -5,6 +5,7 @@
 #include "graphics/rendering/shader.h"
 #include "graphics/models/cube.hpp"
 
+#include "simulation/Simulation.h"
 
 int main()
 {
@@ -38,10 +39,11 @@ int main()
 	// MODELS==============================
 	
 	//задай колличество кубов===========================
-	cube MultyCube[1000];
+	/*cube MultyCube[1000];
 	for (int i = 0; i < 1000; i++) {
 		MultyCube[i].init();
-	}
+	}*/
+	Simulation sim(40.0f, 40.0f, 0.0f);
 	//==================================================
 
 	glm::mat4 view = glm::mat4(1.0f);
@@ -79,7 +81,8 @@ int main()
 		Shader.setMat4("projection", projection);
 
 		//подставь параметры сюда!===============================
-		for (int i = 0; i < 10; i++) {
+		sim.step(currentTime, Shader);
+		/*for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
 				for (int k = 0; k < 10; k++) {
 					MultyCube[100 * i + 10 * j + k].render(Shader,
@@ -87,7 +90,7 @@ int main()
 						{ 0.1f * i, 0.1f * j, 0.1f * k, 0.0f }); //цвет куба меняется от 0 до 1, первые 3 параметра r,g,b, последний всунь по умолчанию 0
 				}
 			} 
-		}
+		}*/
 		//=======================================================
 
 		// send new frame to window

@@ -6,6 +6,7 @@
 #include <cmath>
 
 #include "../neuralnetwork/NeuralNetwork.h"
+#include "../graphics/models/cube.hpp"
 
 class Creature 
 {
@@ -14,11 +15,13 @@ private:
 
     const float fovXY;
     const float fovYZ;
+    const float rColor, gColor, bColor;
 
     const unsigned int numberOfRaysXY;
     const unsigned int numberOfRaysYZ;
 
     NeuralNetwork brain;
+    cube graphicsObject;
 
     const float MAXENERGY = 500.0f;
     const float MAXVELOCITY = 1;
@@ -36,7 +39,8 @@ public:
     Creature(const float x, const float y, const float z,
         const float angleXY, const float angleYZ,
         const float fovXY, const float fovYZ,
-        const unsigned int numberOfRaysXY, const unsigned int numberOfRaysYZ, const float hungerInput);
+        const unsigned int numberOfRaysXY, const unsigned int numberOfRaysYZ, const float hungerInput,
+        const float rColor, const float gColor, const float bColor);
 
     Creature(const Creature& base);
 
@@ -55,6 +59,9 @@ public:
 
     float getFovXY() const;
     float getFovYZ() const;
+    float getRColor() const;
+    float getGColor() const;
+    float getBColor() const;
 
     unsigned int getNumberOfRaysXY() const;
     unsigned int getNumberOfRaysYZ() const;
@@ -71,6 +78,8 @@ public:
 
     float getTimer() const;
     void setTimer(const float t);
+
+    void render(shader Shader) const;
 };
 
 #endif //CREATURE_H

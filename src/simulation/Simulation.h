@@ -9,14 +9,15 @@
 class Simulation final 
 {
 private:
-    unsigned int simulationSizeX, simulationSizeY, simulationSizeZ;
+    float simulationSizeX, simulationSizeY, simulationSizeZ;
 
     std::vector<Creature> herbivore;
     std::vector<Creature> carnivore;
 
 public:
-    Simulation(unsigned int x, unsigned int y, unsigned int z);
-    
+    Simulation(float x, float y, float z);
+    void step(float dt, shader Shader);
+
 };
 
 #endif //SIMULATION_H
