@@ -38,6 +38,8 @@ int main()
 	// MODELS==============================
 	
 	//задай колличество кубов===========================
+	std::vector<cube> MultyCube;
+	
 	for (int i = 0; i < 8000; i++) {
 		MultyCube.push_back(cube());
 		MultyCube[i].init();
