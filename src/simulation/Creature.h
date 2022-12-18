@@ -4,11 +4,12 @@
 #include <memory>
 #include <vector>
 #include <cmath>
+#include <iostream>
 
 #include "../neuralnetwork/NeuralNetwork.h"
 #include "../graphics/models/cube.hpp"
 
-class Creature 
+class Creature
 {
 private:
     float x, y, z, angleXY, angleYZ; 
@@ -35,6 +36,8 @@ private:
 
     float timer = 1.0f;
 
+    
+
 public:
     Creature(const float x, const float y, const float z,
         const float angleXY, const float angleYZ,
@@ -53,6 +56,9 @@ public:
     float getX() const;
     float getY() const;
     float getZ() const;
+    void setX(float xI);
+    void setY(float yI);
+    void setZ(float zI);
 
     float getAngleXY() const;
     float getAngleYZ() const;
@@ -67,6 +73,8 @@ public:
     unsigned int getNumberOfRaysYZ() const;
 
     void move(std::vector<float> &brainInput);
+    
+    float intersection(float xInput, float yInput, float zInput, int rayNumber, float radius);
 
     float getEnergy() const;
     void setEnergy(float energyInput);

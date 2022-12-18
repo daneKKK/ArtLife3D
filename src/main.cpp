@@ -46,7 +46,7 @@ int main()
 		MultyCube.push_back(cube());
 		MultyCube[i].init();
 	}*/
-	Simulation sim(40.0f, 40.0f, 0.0f);
+	Simulation sim(40.0f, 40.0f, 0.0f, 10.0f);
 	//==================================================
 
 	glm::mat4 view = glm::mat4(1.0f);
@@ -84,15 +84,13 @@ int main()
 		Shader.setMat4("projection", projection);
 
 		//подставь параметры сюда!===============================
-<<<<<<< HEAD
 		sim.step(currentTime, Shader);
 		
-=======
+		/*
 		for (int i = 0; i < 20; i++) {
 			for (int j = 0; j < 20; j++) {
 				for (int k = 0; k < 20; k++) {
 					MultyCube[380 * i + 19 * j + k].render(Shader,
->>>>>>> 9e6ee4e085df97f1afe30a1940bb91773eb3d155
 						{ 10 * i, 10 * j, 10 * k }, //позиция куба x, y, z
 						{ 0.05f * i, 0.05f * j, 0.05f * k, 0.0f }); //цвет куба меняется от 0 до 1, первые 3 параметра r,g,b, последний всунь по умолчанию 0
 				}

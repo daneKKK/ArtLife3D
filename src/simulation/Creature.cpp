@@ -15,6 +15,7 @@ Creature::Creature(const float xInput, const float yInput, const float zInput,
     angleYZ = angleYZInput;
     energy = MAXENERGY;
     graphicsObject.init();
+    brain = std::move(NeuralNetwork(numberOfRaysXY * numberOfRaysYZ + 1));
 }
 
 Creature::Creature(const Creature& base): 
@@ -104,6 +105,21 @@ void Creature::setTimer(const float t)
     timer = t;
 }
 
+void Creature::setX(float xI)
+{
+    x = xI;
+}
+
+void Creature::setY(float yI)
+{
+    y = yI;
+}
+
+void Creature::setZ(float zI)
+{
+    z = zI;
+}
+
 float Creature::getRColor() const
 {
     return rColor;
@@ -117,6 +133,21 @@ float Creature::getGColor() const
 float Creature::getBColor() const
 {
     return bColor;
+}
+
+float Creature::intersection(float xInput, float yInput, float zInput, int rayNumber, float radius)
+{
+    float currentAngle = angleXY - fovXY + 2 * fovXY * ((float)rayNumber / numberOfRaysXY);
+    float vX = std::cos(currentAngle);
+    float vY = std::sin(currentAngle);
+    float xRel = xInput - x;
+    float yRel = yInput - y;
+    if ((-1 * vY * (xRel)+vX * (yRel)+radius) * (-1 * vY * (xRel)+vX * (yRel)-radius) < 0) {
+        return xRel * xRel + yRel * yRel;
+    }
+    else {
+        return -1.0f;
+    }
 }
 
 unsigned int Creature::getNumberOfRaysYZ() const {
@@ -135,13 +166,14 @@ void Creature::setBirthCounter(float birthCounterInput) {
 void Creature::move(std::vector<float> &input) {
     float speed, angularSpeed;
     brain.calculateOutputs(input);
-    speed = brain.getOutput(0);
-    angularSpeed = brain.getOutput(1);
+    speed = 2 * (brain.getOutput(0) - 0.5f);
+    angularSpeed = 2 * (brain.getOutput(1) - 0.5f);
 
-    x += speed * std::cos(angleXY);
-    y += speed * std::sin(angleXY);
+    x += 0.1 *speed * std::cos(angleXY);
+    y += 0.1 * speed * std::sin(angleXY);
     angleXY += angularSpeed;
 
+    //std::cout << speed << " " << angularSpeed << std::endl;
     lastSpeed = speed;
     energy -= abs(speed) * hungerFactor;
 }

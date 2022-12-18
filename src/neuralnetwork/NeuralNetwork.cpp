@@ -186,6 +186,11 @@ void NeuralNetwork::calculateOutputs(std::vector<float> &input) {
 		auto j = i->begin();
 		int x0 = 0;
 		while (j < i->end()) {
+			++x0;
+			if ((*j) == nullptr) { 
+				++j;
+				continue; 
+			};
 			for (int k = 0; k < input.size(); k++) {
 				(*j)->giveInput(k, -1, input.at(k));
 			}
@@ -201,7 +206,6 @@ void NeuralNetwork::calculateOutputs(std::vector<float> &input) {
 				++y;
 			}
 			(*j)->calculateOutput();
-			++x0;
 			for (auto n = output.begin(); n < output.end(); ++n) {
 				(*n)->giveInput(x0, y0, (*j)->getOutput());
 			}
