@@ -39,8 +39,7 @@ int main()
 	// MODELS==============================
 	
 	//задай колличество кубов===========================
-	/*cube MultyCube[1000];
-	for (int i = 0; i < 1000; i++) {
+	/*
 	std::vector<cube> MultyCube;
 	
 	for (int i = 0; i < 8000; i++) {
@@ -87,10 +86,7 @@ int main()
 		//подставь параметры сюда!===============================
 <<<<<<< HEAD
 		sim.step(currentTime, Shader);
-		/*for (int i = 0; i < 10; i++) {
-			for (int j = 0; j < 10; j++) {
-				for (int k = 0; k < 10; k++) {
-					MultyCube[100 * i + 10 * j + k].render(Shader,
+		
 =======
 		for (int i = 0; i < 20; i++) {
 			for (int j = 0; j < 20; j++) {
