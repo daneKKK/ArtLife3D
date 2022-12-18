@@ -84,7 +84,8 @@ int main()
 		Shader.setMat4("projection", projection);
 
 		//подставь параметры сюда!===============================
-		sim.step(currentTime, Shader);
+		sim.step(user.dt, Shader);
+		//std::cout << user.dt << std::endl;
 		
 		/*
 		for (int i = 0; i < 20; i++) {

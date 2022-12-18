@@ -24,8 +24,8 @@ private:
     NeuralNetwork brain;
     cube graphicsObject;
 
-    const float MAXENERGY = 500.0f;
-    const float MAXVELOCITY = 1;
+    const float MAXENERGY = 1.0f;
+    const float MAXVELOCITY = 1.0f;
     const float MAXANGULARVELOCITY = 0.04f;
 
     float energy = MAXENERGY;
@@ -34,7 +34,7 @@ private:
 
     const float hungerFactor;
 
-    float timer = 1.0f;
+    float timer = 0.0f;
 
     
 
@@ -46,6 +46,7 @@ public:
         const float rColor, const float gColor, const float bColor);
 
     Creature(const Creature& base);
+    Creature(const Creature& base, bool mutate);
 
     ~Creature();
 
@@ -69,10 +70,12 @@ public:
     float getGColor() const;
     float getBColor() const;
 
+    float getSpeed() const;
+
     unsigned int getNumberOfRaysXY() const;
     unsigned int getNumberOfRaysYZ() const;
 
-    void move(std::vector<float> &brainInput);
+    void move(std::vector<float> &brainInput, float dt);
     
     float intersection(float xInput, float yInput, float zInput, int rayNumber, float radius);
 
@@ -80,12 +83,13 @@ public:
     void setEnergy(float energyInput);
 
     float getBirthCounter() const;
-    void setBirthCounter(float birthCounterInput);
+    void setBirthCounter(const float birthCounterInput);
 
     float getHungerFactor() const;
 
     float getTimer() const;
     void setTimer(const float t);
+
 
     void render(shader Shader) const;
 };

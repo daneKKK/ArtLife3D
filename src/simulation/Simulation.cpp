@@ -4,7 +4,7 @@ Simulation::Simulation(float x, float y, float z, float maxview):
 	simulationSizeX(x), simulationSizeY(y), simulationSizeZ(z) ,MAXVIEW(maxview) 
 {
 	herbivore.push_back(Creature(0.1f*simulationSizeX, 0.5f * simulationSizeY, 0.5f*simulationSizeZ, 0.0f, 0.0f, 3.0f, 0.0f, 20, 1, 1.0f, 0.0f, 1.0f, 0.0f));
-	carnivore.push_back(Creature(0.9f * simulationSizeX, 0.5f*simulationSizeY, 0.5f * simulationSizeZ, 0.0f, 0.0f, 1.0f, 0.0f, 20, 1, 0.3f, 1.0f, 0.0f, 0.0f));
+	carnivore.push_back(Creature(0.9f * simulationSizeX, 0.6f*simulationSizeY, 0.5f * simulationSizeZ, 0.0f, 0.0f, 1.0f, 0.0f, 20, 1, 0.3f, 1.0f, 0.0f, 0.0f));
 }
 
 Simulation::~Simulation() {
@@ -22,7 +22,8 @@ void Simulation::step(float dt, shader Shader)
 	float xT, yT;
 	float lengthSquare;
 
-	for (auto p = herbivore.begin(); p < herbivore.end(); p++) {
+	auto p = herbivore.begin();
+	while (p < herbivore.end()) {
 		for (auto d = carnivore.begin(); d < carnivore.end(); d++) {
 			if (p->getX() - d->getX() > 0.5f * simulationSizeX) { xT = d->getX() + simulationSizeX; }
 			else { xT = d->getX(); }
@@ -46,14 +47,31 @@ void Simulation::step(float dt, shader Shader)
 				}
 			}
 		}
-		p->move(inputs);
+
+
+		p->move(inputs, dt);
+
+		if (abs(p->getSpeed()) < 0.001) {
+			p->setEnergy(p->getEnergy() + 0.08 * dt);
+		}
+
+		p->setTimer(p->getTimer() + 0.1f * dt);
 		p->setX(std::fmod(p->getX(), simulationSizeX));
 		p->setY(std::fmod(p->getY(), simulationSizeY));
 		p->render(Shader);
+
+		if ((p->getEnergy() > 0.9f) && (p->getTimer() > 1.0f)) {
+			p = herbivore.insert(p, Creature((*p), true)) + 1;
+		}
+
+		p++;
 		//std::cout << std::fmod(p->getX(), simulationSizeX) << std::endl;
 	}
-	for (auto p = carnivore.begin(); p < carnivore.end(); p++) {
-		for (auto d = herbivore.begin(); d < herbivore.end(); d++) {
+
+	p = carnivore.begin();
+	while (p < carnivore.end()) {
+		auto d = herbivore.begin();
+		while (d < herbivore.end()) {
 			if (p->getX() - d->getX() > 0.5f * simulationSizeX) { xT = d->getX() + simulationSizeX; }
 			else { xT = d->getX(); }
 			if (d->getX() - p->getX() > 0.5f * simulationSizeX) { xT = d->getX() - simulationSizeX; }
@@ -75,10 +93,29 @@ void Simulation::step(float dt, shader Shader)
 					}
 				}
 			}
+			if (((p->getX() - xT) * (p->getX() - xT) + (p->getY() - yT) * (p->getY() - yT) <= 1.0f) && (p->getTimer() > 1.0f)) {
+				p->setEnergy(p->getEnergy() + 0.2f);
+				p->setBirthCounter(p->getBirthCounter() + 0.4f);
+				p->setTimer(0.0f);
+				d = herbivore.erase(d);
+			}
+			else {
+				d++;
+			}
 		}
-		p->move(inputs);
+		p->move(inputs, dt);
 		p->setX(std::fmod(p->getX(), simulationSizeX));
 		p->setY(std::fmod(p->getY(), simulationSizeY));
+		if (p->getEnergy() < 0.0f) {
+			p = carnivore.erase(p);
+			continue;
+		};
+		p->setTimer(p->getTimer() + 5.0f * dt);
+		if (p->getBirthCounter() >= 0.99f) {
+			p->setBirthCounter(p->getBirthCounter() - 0.99f);
+			p = carnivore.insert(p, Creature(*p, true)) + 1;
+		}
 		p->render(Shader);
+		p++;
 	}
 }

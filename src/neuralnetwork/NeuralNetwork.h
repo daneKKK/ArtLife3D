@@ -4,6 +4,7 @@
 #include <array>
 #include <random>
 #include <memory>
+#include <iostream>
 
 #include "Neuron.h"
 

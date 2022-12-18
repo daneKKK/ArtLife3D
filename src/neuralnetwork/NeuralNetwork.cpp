@@ -52,15 +52,13 @@ NeuralNetwork::NeuralNetwork(const NeuralNetwork& base, bool mutate): inputSize(
 			x1 = newConnectionIndex;
 		}
 		else {
-			auto iterA = network.end();
-			--iterA;
+			auto iterA = network.rbegin();
 			y1 = 3;
-			while (iterA >= network.begin()) {
+			while (iterA != network.rend()) {
 				float connectionFound = false;
-				auto iterB = iterA->end();
-				--iterB;
+				auto iterB = iterA->rbegin();
 				x1 = 9;
-				while (iterB >= iterA->begin()) {
+				while (iterB != iterA->rend()) {
 					if ((*iterB) != nullptr) {
 						--newConnectionIndex;
 						if (newConnectionIndex == 0) {
@@ -68,10 +66,10 @@ NeuralNetwork::NeuralNetwork(const NeuralNetwork& base, bool mutate): inputSize(
 						}
 					}
 					--x1;
-					--iterB;
+					++iterB;
 				}
 				--y1;
-				--iterA;
+				++iterA;
 				if (connectionFound) { break; }
 			}
 		}
@@ -186,8 +184,8 @@ void NeuralNetwork::calculateOutputs(std::vector<float> &input) {
 		auto j = i->begin();
 		int x0 = 0;
 		while (j < i->end()) {
-			++x0;
-			if ((*j) == nullptr) { 
+			if ((*j) == nullptr) {
+				++x0;
 				++j;
 				continue; 
 			};
@@ -209,10 +207,13 @@ void NeuralNetwork::calculateOutputs(std::vector<float> &input) {
 			for (auto n = output.begin(); n < output.end(); ++n) {
 				(*n)->giveInput(x0, y0, (*j)->getOutput());
 			}
+			++x0;
+			++j;
 		}
 		++y0;
 		++i;
 	}
+	
 	for (int j = 0; j < input.size(); ++j) {
 		for (auto n = output.begin(); n < output.end(); ++n) {
 			(*n)->giveInput(j, -1, input.at(j));

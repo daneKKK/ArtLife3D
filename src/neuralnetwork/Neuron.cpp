@@ -51,17 +51,21 @@ bool Neuron::checkConnection(int x, int y) {
 		if ((iterator->x == x) && (iterator->y = y)) {
 			return true;
 		}
+		++iterator;
 	}
 	return false;
 }
 
 void Neuron::giveInput(int x, int y, float w) {
+	//std::cout << "aaaaa" << std::endl;
 	auto iterator = connection.begin();
 	while (iterator < connection.end()) {
 		if ((iterator->x == x) && (iterator->y = y)) {
 			iterator->lastInput = w;
 		}
+		iterator++;
 	}
+	//std::cout << "bbbbb" << std::endl;
 }
 
 float Neuron::calculateOutput()
@@ -70,6 +74,7 @@ float Neuron::calculateOutput()
 	auto iterator = connection.begin();
 	while (iterator < connection.end()) {
 		inputs += iterator->lastInput * iterator->weight;
+		++iterator;
 	}
 	lastOutput = 1.0f / (1.0f + std::exp(-1 * inputs));
 	return lastOutput;
@@ -98,6 +103,7 @@ float Neuron::sigmoid() {
 	auto iterator = connection.begin();
 	while (iterator < connection.end()) {
 		inputs += iterator->lastInput * iterator->weight;
+		++iterator;
 	}
 	return 1.0f / (1.0f + std::exp(-1 * inputs));
 }

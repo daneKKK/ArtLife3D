@@ -31,6 +31,26 @@ Creature::Creature(const Creature& base):
     graphicsObject.init();
 }
 
+Creature::Creature(const Creature& base, bool mutate) :
+    fovXY(base.getFovXY()), fovYZ(base.getFovYZ()),
+    numberOfRaysXY(base.getNumberOfRaysXY()), numberOfRaysYZ(base.getNumberOfRaysYZ()), hungerFactor(base.getHungerFactor()),
+    rColor(base.getRColor()), gColor(base.getGColor()), bColor(base.getBColor()) {
+    x = base.getX();
+    y = base.getY();
+    z = base.getZ();
+    angleXY = base.getAngleXY();
+    if (mutate) {
+        angleXY = 3.142f * static_cast <float> (std::rand()) / static_cast <float> (RAND_MAX);
+        std::cout << angleXY << std::endl;
+        x += std::cos(angleXY) * 1.0f;
+        y += std::sin(angleXY) * 1.0f;
+    };
+    angleYZ = base.getAngleYZ();
+    energy = MAXENERGY;
+    brain = NeuralNetwork(base.brainCopy(), mutate);
+    graphicsObject.init();
+}
+
 Creature::~Creature() {
 }
 
@@ -135,9 +155,14 @@ float Creature::getBColor() const
     return bColor;
 }
 
+float Creature::getSpeed() const
+{
+    return lastSpeed;
+}
+
 float Creature::intersection(float xInput, float yInput, float zInput, int rayNumber, float radius)
 {
-    float currentAngle = angleXY - fovXY + 2 * fovXY * ((float)rayNumber / numberOfRaysXY);
+    float currentAngle = angleXY - fovXY + 2 * fovXY * (static_cast<float> (rayNumber) / static_cast<float> (numberOfRaysXY));
     float vX = std::cos(currentAngle);
     float vY = std::sin(currentAngle);
     float xRel = xInput - x;
@@ -159,23 +184,24 @@ float Creature::getBirthCounter() const
     return birthCounter;
 }
 
-void Creature::setBirthCounter(float birthCounterInput) {
+void Creature::setBirthCounter(const float birthCounterInput) {
     birthCounter = birthCounterInput;
 }
 
-void Creature::move(std::vector<float> &input) {
+void Creature::move(std::vector<float> &input, float dt) {
     float speed, angularSpeed;
     brain.calculateOutputs(input);
     speed = 2 * (brain.getOutput(0) - 0.5f);
     angularSpeed = 2 * (brain.getOutput(1) - 0.5f);
 
-    x += 0.1 *speed * std::cos(angleXY);
-    y += 0.1 * speed * std::sin(angleXY);
+    x += 5 * dt * speed * std::cos(angleXY);
+    y += 5 * dt * speed * std::sin(angleXY);
     angleXY += angularSpeed;
 
     //std::cout << speed << " " << angularSpeed << std::endl;
     lastSpeed = speed;
-    energy -= abs(speed) * hungerFactor;
+    energy -= abs(speed) * hungerFactor * 0.1 * dt;
+    //std::cout << energy << std::endl;
 }
 
 float Creature::getEnergy() const
@@ -184,7 +210,7 @@ float Creature::getEnergy() const
 }
 
 void Creature::setEnergy(float energyInput) {
-    energy = energyInput;
+    energy = std::min(energyInput, MAXENERGY);
 }
 
 float Creature::getHungerFactor() const {
@@ -192,5 +218,6 @@ float Creature::getHungerFactor() const {
 }
 
 void Creature::render(shader Shader) const {
-    graphicsObject.render(Shader, { x, y, z }, {rColor, gColor, bColor, 0.0f});
+    graphicsObject.render(Shader, { x, z, y }, {rColor * (energy / MAXENERGY), gColor * (energy / MAXENERGY), bColor * (energy / MAXENERGY), 0.0f});
 }
+
