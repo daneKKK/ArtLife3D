@@ -11,7 +11,7 @@ settings_camera::settings_camera(camera user)
 	sensitivity_zoom(4.5f),
 	dt(0), 
 	lastTime(0) {
-	speed_DOWN = speed_UP = speed_LEFT = speed_RIGHT = speed_BACKWARD = speed_FORWARD = 2.5f;
+	speed_DOWN = speed_UP = speed_LEFT = speed_RIGHT = speed_BACKWARD = speed_FORWARD = 12.5f;
 }
 
 void settings_camera::input_keyboard() {
