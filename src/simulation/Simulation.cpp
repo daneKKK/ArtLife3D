@@ -6,17 +6,17 @@ Simulation::Simulation(float x, float y, float z, float maxview, int herbiCount,
 	srand(time(NULL) + timerSeed);
 	std::cout << std::rand() << std::endl;
 	for (int i = 0; i < herbiCount; i++) {
-		herbivore.push_back(new Creature(static_cast <float> (std::rand()) / static_cast <float> (RAND_MAX) * simulationSizeX, 
+		herbivore.push_back(new Creature(Creature(static_cast <float> (std::rand()) / static_cast <float> (RAND_MAX) * simulationSizeX, 
 			static_cast <float> (std::rand()) / static_cast <float> (RAND_MAX) * simulationSizeY,
 			0.5f * simulationSizeZ, static_cast <float> (std::rand()) / static_cast <float> (RAND_MAX) * 3.14f, 
-			0.0f, 3.0f, 0.0f, 20, 1, 1.0f, 0.0f, 1.0f, 0.0f));
+			0.0f, 3.0f, 0.0f, 20, 1, 1.0f, 0.0f, 1.0f, 0.0f), true, timerSeed + i * 18));
 	}
 	for (int i = 0; i < carniCount; i++) {
-		carnivore.push_back(new Creature(static_cast <float> (std::rand()) / static_cast <float> (RAND_MAX) * simulationSizeX, 
+		carnivore.push_back(new Creature(Creature(static_cast <float> (std::rand()) / static_cast <float> (RAND_MAX) * simulationSizeX, 
 			static_cast <float> (std::rand()) / static_cast <float> (RAND_MAX) * simulationSizeY, 
 			0.5f * simulationSizeZ, 
 			3.14f * static_cast <float> (std::rand()) / static_cast <float> (RAND_MAX), 
-			0.0f, 1.0f, 0.0f, 20, 1, 0.3f, 1.0f, 0.0f, 0.0f));
+			0.0f, 1.0f, 0.0f, 20, 1, 0.3f, 1.0f, 0.0f, 0.0f), true, timerSeed * 2 + 138));
 		//carnivore.at(i) = std::move(Creature(carnivore.at(i), true));
 	}
 	for (auto p = herbivore.begin(); p < herbivore.end(); p++) {
