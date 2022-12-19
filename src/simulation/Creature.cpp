@@ -59,6 +59,7 @@ Creature::Creature(const Creature& base, bool mutate, int seed) :
 }
 
 Creature::~Creature() {
+    graphicsObject.cleanup();
 }
 
 
