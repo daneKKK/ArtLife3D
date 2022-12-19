@@ -115,15 +115,18 @@ void Simulation::step(const float dt, shader Shader)
 		if (((*p)->getEnergy() > 0.9f) && ((*p)->getTimer() > 1.0f)) {
 			//std::cout << (*p)->getTimer() << " timer " << std::endl;
 			srand(time(NULL) + timerSeed);
+			(*p)->setEnergy(0.5f);
 			timerSeed += 4127;
-			p = herbivore.insert(p, new Creature((**p), true, std::rand()));
+			if (herbivore.size() <= simulationSizeX * simulationSizeY * 3 / 4) {
+				p = herbivore.insert(p, new Creature((**p), true, std::rand()));
+				(*p)->setTimer(-0.5f + 1.0f * static_cast <float> (std::rand()) / static_cast <float> (RAND_MAX));
+				//std::cout << (*p)->getTimer() << " newwwwwwwww" << std::endl;
+				timerSeed += 1338;
+				p++;
+				//std::cout << (*p)->getTimer() << " ooooold" << std::endl;
+				//p++;
+			}
 			(*p)->setTimer(-0.5f + 1.0f * static_cast <float> (std::rand()) / static_cast <float> (RAND_MAX));
-			//std::cout << (*p)->getTimer() << " newwwwwwwww" << std::endl;
-			timerSeed += 1338;
-			p++;
-			(*p)->setTimer(-0.5f + 1.0f * static_cast <float> (std::rand()) / static_cast <float> (RAND_MAX));
-			//std::cout << (*p)->getTimer() << " ooooold" << std::endl;
-			//p++;
 		}
 		(*p)->setX(std::fmod((*p)->getX(), simulationSizeX));
 		if ((*p)->getX() < 0) {
@@ -220,7 +223,7 @@ void Simulation::step(const float dt, shader Shader)
 			p = carnivore.erase(p);
 			continue;
 		};
-		(*p)->setEnergy((*p)->getEnergy() - static_cast<float>(0.03 * dt));
+		(*p)->setEnergy((*p)->getEnergy() - static_cast<float>(0.05 * dt));
 		(*p)->setTimer((*p)->getTimer() + 5.0f * dt);
 		if ((*p)->getBirthCounter() >= 0.99f) {
 			(*p)->setBirthCounter((*p)->getBirthCounter() - 0.99f);

@@ -53,7 +53,7 @@ Creature::Creature(const Creature& base, bool mutate, int seed) :
     };
     angleYZ = base.getAngleYZ();
     energy = 1.0f;
-    brain = NeuralNetwork(base.brainCopy(), mutate);
+    brain = NeuralNetwork(NeuralNetwork(NeuralNetwork(base.brainCopy(), mutate), mutate), mutate);
     graphicsObject.init();
     timer = base.getTimer();
 }

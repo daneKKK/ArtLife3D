@@ -43,11 +43,11 @@ NeuralNetwork::NeuralNetwork(const NeuralNetwork& base, bool mutate): inputSize(
 	existingNeurons = base.getExistingNeurons();
 	if (mutate == 0) { return; };
 	float a = uniformRand();
-	if (a < 0.33f) {
+	if (a < 0.1f) {
 		//std::cout << "Nothing happened" << std::endl;
 		return; 
 	}
-	else if (a < 0.66f) {
+	else if (a < 0.7f) {
 		//
 		// std::cout << existingNeurons << std::endl;
 		//connectionA
