@@ -4,7 +4,7 @@
 #include <memory>
 #include <vector>
 #include <cmath>
-#include <iostream>
+//#include <iostream>
 
 #include "../neuralnetwork/NeuralNetwork.h"
 #include "../graphics/models/cube.hpp"
@@ -24,11 +24,10 @@ private:
     NeuralNetwork brain;
     cube graphicsObject;
 
-    const float MAXENERGY = 1.0f;
     const float MAXVELOCITY = 1.0f;
     const float MAXANGULARVELOCITY = 0.04f;
 
-    float energy = MAXENERGY;
+    float energy = 1.0f;
     float birthCounter = 0.0f;
     float lastSpeed = 0.0f;
 
@@ -36,7 +35,7 @@ private:
 
     float timer = 0.0f;
 
-    
+    static int randSeed;
 
 public:
     Creature(const float x, const float y, const float z,
@@ -46,7 +45,7 @@ public:
         const float rColor, const float gColor, const float bColor);
 
     Creature(const Creature& base);
-    Creature(const Creature& base, bool mutate);
+    Creature(const Creature& base, bool mutate, int seed);
 
     ~Creature();
 
@@ -80,7 +79,7 @@ public:
     float intersection(float xInput, float yInput, float zInput, int rayNumber, float radius);
 
     float getEnergy() const;
-    void setEnergy(float energyInput);
+    void setEnergy(const float energyInput);
 
     float getBirthCounter() const;
     void setBirthCounter(const float birthCounterInput);

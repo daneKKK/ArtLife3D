@@ -6,6 +6,8 @@
 #include "graphics/models/cube.hpp"
 
 #include "simulation/Simulation.h"
+#include <iostream>
+#include <time.h>
 
 int main()
 {
@@ -46,7 +48,9 @@ int main()
 		MultyCube.push_back(cube());
 		MultyCube[i].init();
 	}*/
-	Simulation sim(40.0f, 40.0f, 0.0f, 10.0f);
+	Simulation sim(40.0f, 40.0f, 0.0f, 20.0f, 10, 50);
+	std::srand(time(NULL));
+	
 	//==================================================
 
 	glm::mat4 view = glm::mat4(1.0f);
@@ -85,6 +89,7 @@ int main()
 
 		//подставь параметры сюда!===============================
 		sim.step(user.dt, Shader);
+		//std::cout << user.dt << std::endl;
 		//std::cout << user.dt << std::endl;
 		
 		/*

@@ -18,6 +18,11 @@ unsigned int Neuron::getConnectionLength() {
 	return connection.size();
 }
 
+Neuron::~Neuron()
+{
+	//std::cout << "DELETE" << std::endl;
+}
+
 void Neuron::switchConnection(int x, int y) {
 	auto iterator = connection.begin();
 	while (iterator < connection.end()) {
@@ -27,14 +32,18 @@ void Neuron::switchConnection(int x, int y) {
 		}
 		++iterator;
 	}
-	connection.push_back(Connection(x, y, (uniformRand() - 0.5f)*2));
+	float t = ((uniformRand() - 0.5f) * 10);
+	//std::cout << t << std::endl;
+	connection.push_back(Connection(x, y, t));
 }
 
 void Neuron::mutate() {
 	auto iterator = connection.begin();
 	while (iterator < connection.end()) {
 		if (uniformRand() < 0.3f) {
-			iterator->weight = iterator->weight + normalRand(-0.7f, 0.7f);
+			float d = normalRand(-1.5f, 1.5f);
+			//std::cout << "Norma; " << d << std::endl;
+			iterator->weight = iterator->weight + d;
 		}
 		++iterator;
 	}
@@ -86,6 +95,8 @@ float Neuron::getOutput()
 }
 
 float Neuron::normalRand(float xl, float xh) {
+	srand(time(NULL) + (int)this + randSeed);
+	randSeed += 1234 + std::rand();
 	float s = 0;
 	const int NUMBEROFROLLS = 5;
 	for (int i = 0; i < NUMBEROFROLLS; i++) {
@@ -95,6 +106,7 @@ float Neuron::normalRand(float xl, float xh) {
 }
 
 float Neuron::uniformRand() {
+	srand(time(NULL) + (int)this + randSeed);
 	return static_cast <float> (std::rand()) / static_cast <float> (RAND_MAX);
 }
 
@@ -108,4 +120,4 @@ float Neuron::sigmoid() {
 	return 1.0f / (1.0f + std::exp(-1 * inputs));
 }
 	
-
+int Neuron::randSeed = 13;

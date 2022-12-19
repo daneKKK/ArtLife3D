@@ -6,6 +6,7 @@
 #include <cmath>
 #include <memory>
 #include <iostream>
+#include <time.h>
 
 #include "Connection.h"
 
@@ -22,11 +23,14 @@ private:
 
 	float sigmoid();
 
+	static int randSeed;
+
 public:
 
 	Neuron();
 
 	Neuron(const Neuron& base);
+	~Neuron();
 
 	Neuron& operator=(const Neuron& base);
 

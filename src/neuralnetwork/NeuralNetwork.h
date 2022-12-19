@@ -5,6 +5,7 @@
 #include <random>
 #include <memory>
 #include <iostream>
+#include <time.h>
 
 #include "Neuron.h"
 
@@ -15,7 +16,7 @@ private:
     std::array<std::array<Neuron*, 10>, 4> network;
     std::array<Neuron*, 3> output;
 
-    const unsigned int inputSize;
+    unsigned int inputSize;
 
     unsigned int existingNeurons;
 
@@ -23,11 +24,14 @@ private:
 
     float getOneOutput(int x, int y);
 
+    static int randSeed;
+
 public:
     NeuralNetwork();
     NeuralNetwork(unsigned int inputSize);
     NeuralNetwork(const NeuralNetwork& base);
     NeuralNetwork(const NeuralNetwork& base, bool mutate);
+    ~NeuralNetwork();
 
     NeuralNetwork& operator=(const NeuralNetwork& base);
 

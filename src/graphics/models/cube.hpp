@@ -11,7 +11,7 @@ public:
 	glm::vec3 size;
 
 	cube(glm::vec4 colors = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f),
-		glm::vec3 size = glm::vec3(0.8f, 0.8f, 0.8f))
+		glm::vec3 size = glm::vec3(1.0f, 1.0f, 1.0f))
 		: pos(glm::vec3(0.0f, 0.0f, 0.0f)), colors(colors), size(size) {}
 
 	void init() {

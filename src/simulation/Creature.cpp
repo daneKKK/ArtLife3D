@@ -13,9 +13,10 @@ Creature::Creature(const float xInput, const float yInput, const float zInput,
     z = zInput;
     angleXY = angleXYInput;
     angleYZ = angleYZInput;
-    energy = MAXENERGY;
+    energy = 1.0f;
     graphicsObject.init();
-    brain = std::move(NeuralNetwork(numberOfRaysXY * numberOfRaysYZ + 1));
+    brain = NeuralNetwork(numberOfRaysXY * numberOfRaysYZ + 1);
+    timer = 0.0f;
 }
 
 Creature::Creature(const Creature& base): 
@@ -29,26 +30,32 @@ Creature::Creature(const Creature& base):
     angleYZ = base.getAngleYZ();
     brain = std::move(base.brainCopy());
     graphicsObject.init();
+    timer = base.getTimer();
+    energy = base.getEnergy();
 }
 
-Creature::Creature(const Creature& base, bool mutate) :
+Creature::Creature(const Creature& base, bool mutate, int seed) :
     fovXY(base.getFovXY()), fovYZ(base.getFovYZ()),
     numberOfRaysXY(base.getNumberOfRaysXY()), numberOfRaysYZ(base.getNumberOfRaysYZ()), hungerFactor(base.getHungerFactor()),
     rColor(base.getRColor()), gColor(base.getGColor()), bColor(base.getBColor()) {
+    srand(time(NULL) + (int)this + seed + randSeed);
+    randSeed += 834 + std::rand();
+    //std::cout << seed << "   " << std::rand() << std::endl;
     x = base.getX();
     y = base.getY();
     z = base.getZ();
     angleXY = base.getAngleXY();
     if (mutate) {
         angleXY = 3.142f * static_cast <float> (std::rand()) / static_cast <float> (RAND_MAX);
-        std::cout << angleXY << std::endl;
-        x += std::cos(angleXY) * 1.0f;
-        y += std::sin(angleXY) * 1.0f;
+        //std::cout << angleXY << std::endl;
+        x = x + std::cos(angleXY) * 1.0f;
+        y = y + std::sin(angleXY) * 1.0f;
     };
     angleYZ = base.getAngleYZ();
-    energy = MAXENERGY;
+    energy = 0.0f;
     brain = NeuralNetwork(base.brainCopy(), mutate);
     graphicsObject.init();
+    timer = base.getTimer();
 }
 
 Creature::~Creature() {
@@ -122,6 +129,9 @@ float Creature::getTimer() const
 
 void Creature::setTimer(const float t)
 {
+    if ((abs(t - timer) > 0.1f)&&(timer < 5.0f)) {
+        std::cout << "CHANGING TIMER FROM " << timer << " TO " << t << std::endl;
+    }
     timer = t;
 }
 
@@ -196,11 +206,11 @@ void Creature::move(std::vector<float> &input, float dt) {
 
     x += 5 * dt * speed * std::cos(angleXY);
     y += 5 * dt * speed * std::sin(angleXY);
-    angleXY += angularSpeed;
+    angleXY += angularSpeed * static_cast<float>(dt) * 0.3f;
 
     //std::cout << speed << " " << angularSpeed << std::endl;
     lastSpeed = speed;
-    energy -= abs(speed) * hungerFactor * 0.1 * dt;
+    energy -= abs(speed) * hungerFactor * 0.1f * dt;
     //std::cout << energy << std::endl;
 }
 
@@ -209,8 +219,11 @@ float Creature::getEnergy() const
     return energy;
 }
 
-void Creature::setEnergy(float energyInput) {
-    energy = std::min(energyInput, MAXENERGY);
+void Creature::setEnergy(const float energyInput) {
+    if (energy - energyInput < -0.01f) {
+        std::cout << "ADDITION OF " << energyInput - energy << " TO " << energy << std::endl;
+    }
+    energy = energyInput;
 }
 
 float Creature::getHungerFactor() const {
@@ -218,6 +231,8 @@ float Creature::getHungerFactor() const {
 }
 
 void Creature::render(shader Shader) const {
-    graphicsObject.render(Shader, { x, z, y }, {rColor * (energy / MAXENERGY), gColor * (energy / MAXENERGY), bColor * (energy / MAXENERGY), 0.0f});
+    float e = energy;
+    graphicsObject.render(Shader, { x, z, y }, {rColor * e, gColor * e, bColor * e, 0.0f});
 }
 
+int Creature::randSeed = -1;

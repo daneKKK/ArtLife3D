@@ -6,7 +6,7 @@
 #include <array>
 #include <vector>
 #include <algorithm>
-#include <iostream>
+//#include <iostream>
 
 class Simulation final 
 {
@@ -17,11 +17,13 @@ private:
     std::vector<Creature> herbivore;
     std::vector<Creature> carnivore;
 
+    int timerSeed = 0;
+
 public:
-    Simulation(float x, float y, float z, float maxview);
+    Simulation(float x, float y, float z, float maxview, int herbiCount, int carniCount);
     ~Simulation();
 
-    void step(float dt, shader Shader);
+    void step(const float dt, shader Shader);
 
 };
 

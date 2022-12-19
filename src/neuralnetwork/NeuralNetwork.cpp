@@ -27,7 +27,6 @@ NeuralNetwork::NeuralNetwork(unsigned int inputSize): inputSize(inputSize) {
 		++iterC;
 		++existingNeurons;
 	}
-
 }
 
 NeuralNetwork::NeuralNetwork(const NeuralNetwork& base): inputSize(base.getInputSize()) {
@@ -37,13 +36,20 @@ NeuralNetwork::NeuralNetwork(const NeuralNetwork& base): inputSize(base.getInput
 }
 
 NeuralNetwork::NeuralNetwork(const NeuralNetwork& base, bool mutate): inputSize(base.getInputSize()) {
+	srand(time(NULL) + (int)this + randSeed);
+	randSeed += 532 + std::rand();
 	network = base.copyNetwork();
 	output = base.copyOutput();
 	existingNeurons = base.getExistingNeurons();
 	if (mutate == 0) { return; };
 	float a = uniformRand();
-	if (a < 0.33f) { return; }
+	if (a < 0.33f) {
+		//std::cout << "Nothing happened" << std::endl;
+		return; 
+	}
 	else if (a < 0.66f) {
+		//
+		// std::cout << existingNeurons << std::endl;
 		//connectionA
 		int x0, x1, y0, y1;
 		int newConnectionIndex = std::rand() % existingNeurons;
@@ -73,10 +79,12 @@ NeuralNetwork::NeuralNetwork(const NeuralNetwork& base, bool mutate): inputSize(
 				if (connectionFound) { break; }
 			}
 		}
+		//std::cout << inputSize << std::endl;
 		newConnectionIndex = std::rand() % (inputSize + std::min(static_cast<int>(existingNeurons - 1 - newConnectionIndex), static_cast<int>(existingNeurons - output.size())));
 		if (newConnectionIndex < inputSize + 1) {
 			y0 = -1;
 			x0 = newConnectionIndex;
+			//std::cout << "trie " << x0 << std::endl;
 		}
 		else {
 			auto iterA = network.begin();
@@ -107,6 +115,7 @@ NeuralNetwork::NeuralNetwork(const NeuralNetwork& base, bool mutate): inputSize(
 		else {
 			network.at(y1).at(x1)->switchConnection(x0, y0);
 		}
+		//std::cout << "Switched connection at: " << y1 << ", " << x1 << "; " << y0 << ", " << x0 << std::endl;
 	}
 	else {
 		int x = std::rand() % 10;
@@ -114,8 +123,21 @@ NeuralNetwork::NeuralNetwork(const NeuralNetwork& base, bool mutate): inputSize(
 		if (network.at(y).at(x) != nullptr) { return; };
 		network.at(y).at(x) = new Neuron();
 		++existingNeurons;
+		//std::cout << "Switched neuron at " << x << " " << y << std::endl;
 	}
 
+}
+
+NeuralNetwork::~NeuralNetwork()
+{
+	for (int y = 0; y < 4; y++) {
+		for (int x = 0; x < 9; x++) {
+			delete network.at(y).at(x);
+		}
+	}
+	for (int i = 0; i < 3; i++) {
+		delete output.at(i);
+	}
 }
 
 NeuralNetwork& NeuralNetwork::operator=(const NeuralNetwork& base)
@@ -123,6 +145,7 @@ NeuralNetwork& NeuralNetwork::operator=(const NeuralNetwork& base)
 	network = base.copyNetwork();
 	output = base.copyOutput();
 	existingNeurons = base.getExistingNeurons();
+	inputSize = base.getInputSize();
 	return *this;
 }
 
@@ -228,3 +251,5 @@ float NeuralNetwork::getOutput(int i) const
 {
 	return output.at(i)->getOutput();
 }
+
+int NeuralNetwork::randSeed = 173;
