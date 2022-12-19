@@ -52,7 +52,7 @@ Creature::Creature(const Creature& base, bool mutate, int seed) :
         y = y + std::sin(angleXY) * 1.0f;
     };
     angleYZ = base.getAngleYZ();
-    energy = 0.0f;
+    energy = 1.0f;
     brain = NeuralNetwork(base.brainCopy(), mutate);
     graphicsObject.init();
     timer = base.getTimer();
@@ -129,9 +129,9 @@ float Creature::getTimer() const
 
 void Creature::setTimer(const float t)
 {
-    if ((abs(t - timer) > 0.1f)&&(timer < 5.0f)) {
-        std::cout << "CHANGING TIMER FROM " << timer << " TO " << t << std::endl;
-    }
+    //if ((abs(t - timer) > 0.1f)&&(timer < 5.0f)) {
+    //    std::cout << "CHANGING TIMER FROM " << timer << " TO " << t << std::endl;
+    //}
     timer = t;
 }
 
@@ -220,9 +220,9 @@ float Creature::getEnergy() const
 }
 
 void Creature::setEnergy(const float energyInput) {
-    if (energy - energyInput < -0.01f) {
-        std::cout << "ADDITION OF " << energyInput - energy << " TO " << energy << std::endl;
-    }
+    //if (energy - energyInput < -0.01f) {
+    //    std::cout << "ADDITION OF " << energyInput - energy << " TO " << energy << std::endl;
+    //}
     energy = energyInput;
 }
 

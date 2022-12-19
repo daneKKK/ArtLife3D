@@ -48,7 +48,7 @@ int main()
 		MultyCube.push_back(cube());
 		MultyCube[i].init();
 	}*/
-	Simulation sim(40.0f, 40.0f, 0.0f, 20.0f, 10, 50);
+	Simulation sim(30.0f, 30.0f, 0.0f, 20.0f, 10, 50);
 	std::srand(time(NULL));
 	
 	//==================================================

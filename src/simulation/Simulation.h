@@ -14,8 +14,8 @@ private:
     float simulationSizeX, simulationSizeY, simulationSizeZ;
     float const MAXVIEW;
 
-    std::vector<Creature> herbivore;
-    std::vector<Creature> carnivore;
+    std::vector<Creature*> herbivore;
+    std::vector<Creature*> carnivore;
 
     int timerSeed = 0;
 
