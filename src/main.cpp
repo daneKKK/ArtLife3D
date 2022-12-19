@@ -108,7 +108,11 @@ int main()
 		Screen.newFrame();
 		glfwPollEvents();
 	}
-
+	/*
+	for (int i = 0; i < 8000; i++) {
+		MultyCube[i].cleanup();
+	}
+	*/
 	glfwTerminate();
 	return 0;
 }
